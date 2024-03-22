@@ -35,7 +35,7 @@ class PostAPIView(APIView):
 
     def delete(self, request):
         Post.objects.get(id = request.data['post_id']).delete()
-
+        
         posts = Post.objects.all().values()
         return Response({
             'message': 'Post deleted succefully',
