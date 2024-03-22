@@ -22,3 +22,22 @@ class PostAPIView(APIView):
             'message': 'Post created succefully',
             'post': model_to_dict(post_new)
             })
+    
+    def patch(self, request):
+        post = Post.objects.get(id = request.data['post_id'])
+        post.title = request.data['title']
+        post.content = request.data['content']
+        post.save()
+        return Response({
+            'message': 'Post updated succefully',
+            'post': model_to_dict(post)
+        })
+
+    def delete(self, request):
+        Post.objects.get(id = request.data['post_id']).delete()
+
+        posts = Post.objects.all().values()
+        return Response({
+            'message': 'Post deleted succefully',
+            'post': list(posts)
+        })
