@@ -7,10 +7,12 @@ from django.forms import model_to_dict
 
 class PostAPIView(APIView):
 
+    # Get all posts
     def get(self, request):
         posts = Post.objects.all().values()
         return Response({'posts': list(posts)})
     
+    # Add new post: require title and content parameters
     def post(self, request):
         user = User.objects.get(id=1)
         post_new = Post.objects.create(
@@ -23,6 +25,7 @@ class PostAPIView(APIView):
             'post': model_to_dict(post_new)
             })
     
+    #  Update post: require post_id, title and content parameters
     def patch(self, request):
         post = Post.objects.get(id = request.data['post_id'])
         post.title = request.data['title']
@@ -33,9 +36,10 @@ class PostAPIView(APIView):
             'post': model_to_dict(post)
         })
 
+    # Delete post: reruire post_id parameter
     def delete(self, request):
         Post.objects.get(id = request.data['post_id']).delete()
-        
+
         posts = Post.objects.all().values()
         return Response({
             'message': 'Post deleted succefully',
